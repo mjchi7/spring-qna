@@ -17,6 +17,17 @@ Some of the reason why people might find field injection bad:
 
 See also: [link](https://stackoverflow.com/a/39892204/9897617)
 
+### "Whenever you use a field injection, a unit test die" - Josh Long
+It was mentioned in the talk [here](https://www.youtube.com/watch?v=sbPSjI4tt10&feature=youtu.be&t=29m22s&ab_channel=InfoQ)
+
+After reading through the [article here](https://tedvinke.wordpress.com/2014/02/13/mockito-why-you-should-not-use-injectmocks-annotation-to-autowire-fields/), here's my interpretation:
+
+Facts:
+1. Field injections are implicit dependencies. Meaning that if we inject by field, there's no way for caller to know about that unless they look at the components' code. Contrast to constructor dependency whereby compiler will fail because of argument mismatch
+2. The annotation @InjectMocks will fail silently if dependencies are not found. 
+
+Imagine the scenario: A developer add a new dependency to a service. It compiles alright, but tests are failing, due to NPE. What if constructor injectors are used instead? Compiles fail because of argument mismatch when it is trying to create the server in test. Immediate action can be taken
+
 ### What about setter injection?
 Most useful if a re-injection of certain dependencies are needed. Downside is there are a good amount of boilerplate code to be created.
 See also: [Spring docs](https://docs.spring.io/spring-framework/docs/5.0.14.RELEASE/spring-framework-reference/core.html#beans-setter-injection)
